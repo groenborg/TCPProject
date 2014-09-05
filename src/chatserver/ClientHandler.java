@@ -40,7 +40,7 @@ public class ClientHandler implements Runnable {
         try {
 
             String message;
-            while ((message = this.input.readLine()) != null) {
+            while ((message = this.input.readLine()) != null ) {
                 System.out.println("");
             }
 
