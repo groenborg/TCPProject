@@ -12,28 +12,68 @@ import java.net.Socket;
 public class ChatServer implements Runnable {
 
     private ServerSocket serverSocket;
+    private Thread thread;
     private boolean running = true;
 
-    public ChatServer() throws IOException {
-        this.serverSocket = new ServerSocket();
-        this.serverSocket.bind(new InetSocketAddress("127.0.0.1", 8014));
+    private final String ipAddress = "127.0.0.1";
+    private final int port = 8014;
+    private static ChatServer instance = new ChatServer();
+
+    private ChatServer() {
+    }
+
+    public static ChatServer getInstance() {
+        if (instance == null) {
+            instance = new ChatServer();
+        }
+        return instance;
     }
 
     @Override
     public void run() {
 
+        openConnection();
         while (running) {
-
             try {
                 Socket socket;
                 socket = this.serverSocket.accept();
-
-                
-                
-                
-            } catch (Exception e) {
+                Thread thread = new Thread(new ClientHandler(socket));
+                thread.start();
+            } catch (IOException e) {
+                if (!running) {
+                    System.out.println("Server stopped Running");
+                    closeServer();
+                }
                 e.printStackTrace();
             }
+        }
+
+    }
+
+    private void openConnection() {
+        try {
+            this.serverSocket = new ServerSocket();
+            this.serverSocket.bind(new InetSocketAddress(ipAddress, port));
+        } catch (IOException e) {
+            System.out.println("Server is closeing");
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized void startServer() {
+        this.thread = new Thread(this);
+        this.thread.start();
+        System.out.println("Server Started in: " + thread.getName());
+    }
+
+    public synchronized void closeServer() {
+        try {
+            running = false;
+            this.serverSocket.close();
+            this.thread.join();
+        } catch (IOException | InterruptedException ex) {
+            System.out.println("Closing server");
+            ex.printStackTrace();
         }
 
     }
