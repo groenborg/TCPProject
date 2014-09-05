@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package chatserver;
 
 import java.io.BufferedReader;
@@ -22,30 +17,42 @@ public class ClientHandler implements Runnable {
     private Socket client;
 
     private String clientName;
-    
-    
+    private String clientAddress;
+
     public ClientHandler(Socket client) throws IOException {
         this.client = client;
         this.input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        this.output = new PrintWriter(client.getOutputStream());
+        this.output = new PrintWriter(client.getOutputStream(), true); // autoflush on
 
     }
 
     @Override
     public void run() {
-        System.out.println("handling new client: " + this.client.getInetAddress().toString());
-        
-        
-        
         try {
+            this.clientName = this.client.getInetAddress().getHostName();
+            this.clientAddress = this.client.getInetAddress().getHostAddress();
+            System.out.println("handling client: " + clientName + " " + clientAddress);
 
             String message;
-            while ((message = this.input.readLine()) != null) {
-                System.out.println("");
+            while ((message = this.input.readLine()) != null || message.contains("##STOP##")) {
+                System.out.println("Server Says: " + message);
             }
+            shutDownClient();
 
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+
+    }
+
+    private void shutDownClient() {
+        try {
+            this.client.close();
+            this.input.close();
+            this.output.close();
+        } catch (IOException e) {
+            System.out.println("Error in client shutdown");
+            e.printStackTrace();
         }
 
     }
