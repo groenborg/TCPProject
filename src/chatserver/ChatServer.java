@@ -15,7 +15,7 @@ public class ChatServer implements Runnable {
     private Thread thread;
     private boolean running = true;
 
-    private final String ipAddress = "127.0.0.1";
+    private final String ipAddress = "10.0.1.11";
     private final int port = 8014;
     private static ChatServer instance = new ChatServer();
 
