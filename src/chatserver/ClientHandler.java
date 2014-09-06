@@ -12,9 +12,9 @@ import java.net.Socket;
  */
 public class ClientHandler implements Runnable {
 
-    private BufferedReader input;
-    private PrintWriter output;
-    private Socket client;
+    private final BufferedReader input;
+    private final PrintWriter output;
+    private final Socket client;
 
     private String clientName;
     private String clientAddress;
@@ -29,13 +29,15 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
-            this.clientName = this.client.getInetAddress().getHostName();
+            this.clientName = this.client.getLocalSocketAddress().toString();
             this.clientAddress = this.client.getInetAddress().getHostAddress();
             System.out.println("handling client: " + clientName + " " + clientAddress);
 
-            String message;
-            while ((message = this.input.readLine()) != null || message.contains("##STOP##")) {
+            String message = "";
+            while (!message.contains("##STOP##")) {
+                message = input.readLine(); // BLOCKING CALL
                 System.out.println("Server Says: " + message);
+                output.println("ECHO: " + message);
             }
             shutDownClient();
 
@@ -50,11 +52,12 @@ public class ClientHandler implements Runnable {
             this.client.close();
             this.input.close();
             this.output.close();
+            
         } catch (IOException e) {
             System.out.println("Error in client shutdown");
             e.printStackTrace();
         }
-
+        System.out.println("Client succesfully disconnected");
     }
 
 }

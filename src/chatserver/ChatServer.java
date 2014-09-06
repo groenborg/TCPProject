@@ -54,6 +54,7 @@ public class ChatServer implements Runnable {
         try {
             this.serverSocket = new ServerSocket();
             this.serverSocket.bind(new InetSocketAddress(ipAddress, port));
+            System.out.println("Connection opened on: " + ipAddress + " port: " + port);
         } catch (IOException e) {
             System.out.println("Server is closeing");
             e.printStackTrace();

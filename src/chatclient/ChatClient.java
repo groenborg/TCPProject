@@ -13,17 +13,19 @@ import java.util.ArrayList;
  */
 public class ChatClient implements Runnable {
 
-    private ArrayList<Observer> listeners = new ArrayList();
+    private final ArrayList<Observer> listeners;
     private Socket socket;
     private BufferedReader input;
     private PrintWriter output;
 
-    private String inetAddress;
-    private int port;
+    private final String inetAddress;
+    private final int port;
+    private Thread thread;
 
     public ChatClient(String inetAddress, int port) {
         this.inetAddress = inetAddress;
         this.port = port;
+        listeners = new ArrayList<>();
     }
 
     public void addListeners(Observer observer) {
@@ -45,6 +47,8 @@ public class ChatClient implements Runnable {
             this.socket = new Socket(inetAddress, port);
             this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.output = new PrintWriter(socket.getOutputStream(), true);
+            this.thread = new Thread(this);
+            this.thread.start();
         } catch (IOException ex) {
             System.out.println("Failed to connect to server");
         }
@@ -56,26 +60,24 @@ public class ChatClient implements Runnable {
             input.close();
             output.close();
             socket.close();
-
-        } catch (IOException ex) {
+        } catch (IOException  ex) {
             ex.printStackTrace();
         }
         System.out.println("client succesfully closed");
     }
 
     public void send(String message) {
-        output.print(message);
+        output.println(message);
     }
 
     @Override
     public void run() {
-
         String message;
         try {
             do {
                 message = input.readLine();
                 notifyListeners(message);
-            } while (message != null || message.contains("##STOP##"));
+            } while (!message.contains("##STOP##"));
             close();
         } catch (IOException ex) {
             System.out.println("Something wrong with input");

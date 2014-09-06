@@ -22,7 +22,7 @@ public class TCPProject {
     }
 
     public static void startClient() {
-        int portNumber = 7;
+        int portNumber = 8014;
         try {
             
             InetAddress host = InetAddress.getLocalHost();

@@ -13,7 +13,7 @@ public class StartServer {
         // Starting ChatServer
         ChatServer server = ChatServer.getInstance();
         server.startServer();
-
+        
     }
 
 }
