@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,14 +33,13 @@ public class ChatServer implements Runnable {
 
     @Override
     public void run() {
-
         openConnection();
         while (running) {
+            Socket socket;
             try {
-                Socket socket;
                 socket = this.serverSocket.accept();
-                Thread thread = new Thread(new ClientHandler(socket));
-                thread.start();
+                Thread t = new Thread(new ClientHandler(socket));
+                t.start();
             } catch (IOException e) {
                 if (!running) {
                     System.out.println("Server stopped Running");
@@ -71,12 +72,11 @@ public class ChatServer implements Runnable {
         try {
             running = false;
             this.serverSocket.close();
-            this.thread.join();
-        } catch (IOException | InterruptedException ex) {
-            System.out.println("Closing server");
+        } catch (IOException ex) {
+            System.out.println("error in closing server");
             ex.printStackTrace();
         }
-
+        System.out.println("server closed");
     }
 
 }
