@@ -17,7 +17,6 @@ public class ClientHandler implements Runnable {
     private final Socket client;
 
     private String clientName;
-    private String clientAddress;
 
     public ClientHandler(Socket client) throws IOException {
         this.client = client;
@@ -30,8 +29,7 @@ public class ClientHandler implements Runnable {
     public void run() {
         try {
             this.clientName = this.client.getLocalSocketAddress().toString();
-            this.clientAddress = this.client.getInetAddress().getHostAddress();
-            System.out.println("handling client: " + clientName + " " + clientAddress);
+            System.out.println("handling client: " + clientName);
 
             String message = "";
             while (!message.contains("##STOP##")) {
@@ -52,7 +50,7 @@ public class ClientHandler implements Runnable {
             this.client.close();
             this.input.close();
             this.output.close();
-            
+
         } catch (IOException e) {
             System.out.println("Error in client shutdown");
             e.printStackTrace();

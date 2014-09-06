@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Properties;
+import utility.Utility;
 
 /**
  *
@@ -16,10 +16,11 @@ public class ChatServer implements Runnable {
     private ServerSocket serverSocket;
     private Thread thread;
     private boolean running = true;
-
-    private final String ipAddress = "10.0.1.11";
-    private final int port = 8014;
     private static ChatServer instance = new ChatServer();
+
+    private final Properties properties = Utility.initProperties("server.properties");
+    private String ipAddress = "10.0.1.11";
+    private int port = 8014;
 
     private ChatServer() {
     }
@@ -51,18 +52,9 @@ public class ChatServer implements Runnable {
 
     }
 
-    private void openConnection() {
-        try {
-            this.serverSocket = new ServerSocket();
-            this.serverSocket.bind(new InetSocketAddress(ipAddress, port));
-            System.out.println("Connection opened on: " + ipAddress + " port: " + port);
-        } catch (IOException e) {
-            System.out.println("Server is closeing");
-            e.printStackTrace();
-        }
-    }
-
     public synchronized void startServer() {
+        this.port = Integer.parseInt(properties.getProperty("port"));
+        this.ipAddress = properties.getProperty("ipaddress");
         this.thread = new Thread(this);
         this.thread.start();
         System.out.println("Server Started in: " + thread.getName());
@@ -77,6 +69,17 @@ public class ChatServer implements Runnable {
             ex.printStackTrace();
         }
         System.out.println("server closed");
+    }
+
+    private void openConnection() {
+        try {
+            this.serverSocket = new ServerSocket();
+            this.serverSocket.bind(new InetSocketAddress(ipAddress, port));
+            System.out.println("Connection opened on: " + ipAddress + " port: " + port);
+        } catch (IOException e) {
+            System.out.println("Server is closeing");
+            e.printStackTrace();
+        }
     }
 
 }
