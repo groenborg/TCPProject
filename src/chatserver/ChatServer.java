@@ -36,7 +36,7 @@ public class ChatServer implements Runnable {
     public void run() {
         openConnection();
         while (running) {
-            Socket socket;
+            Socket socket = null;
             try {
                 socket = this.serverSocket.accept();
                 Thread t = new Thread(new ClientHandler(socket));
@@ -44,9 +44,10 @@ public class ChatServer implements Runnable {
             } catch (IOException e) {
                 if (!running) {
                     System.out.println("Server stopped Running");
+                    closeConnection(socket);
                     closeServer();
                 }
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
 
@@ -61,9 +62,21 @@ public class ChatServer implements Runnable {
         System.out.println("Server Started in: " + thread.getName());
     }
 
+    private void closeConnection(Socket socket) {
+        try {
+            if(socket != null){
+                socket.shutdownInput();
+                socket.shutdownOutput();
+                socket.close();   
+            }  
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public synchronized void closeServer() {
         try {
-            running = false;
+            this.running = false;
             this.serverSocket.close();
         } catch (IOException ex) {
             System.out.println("error in closing server");

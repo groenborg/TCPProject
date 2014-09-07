@@ -29,7 +29,6 @@ public class StartServer {
             while (!(command = r.readLine()).contains("killall")) {
                 if (command.contains("kill")) {
                     server.closeServer();
-                    System.out.println("closed server");
                 }
             }
         } catch (IOException e) {
