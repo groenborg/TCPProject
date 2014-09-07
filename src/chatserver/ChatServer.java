@@ -46,8 +46,9 @@ public class ChatServer implements Runnable {
                     System.out.println("Server stopped Running");
                     closeConnection(socket);
                     closeServer();
+                    return;
                 }
-                //e.printStackTrace();
+                e.printStackTrace();
             }
         }
 
