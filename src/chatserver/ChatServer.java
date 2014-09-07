@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.Properties;
 import utility.Utility;
 
@@ -21,6 +22,7 @@ public class ChatServer implements Runnable {
     private final Properties properties = Utility.initProperties("server.properties");
     private String ipAddress = "10.0.1.11";
     private int port = 8014;
+    private HashMap<String, String> onsineUsers = new HashMap<>();
 
     private ChatServer() {
     }
@@ -54,6 +56,10 @@ public class ChatServer implements Runnable {
 
     }
 
+    public HashMap<String, String> getUsers() {
+        return this.onsineUsers;
+    }
+
     public synchronized void startServer() {
         this.port = Integer.parseInt(properties.getProperty("port"));
         this.ipAddress = properties.getProperty("ipaddress");
@@ -63,13 +69,14 @@ public class ChatServer implements Runnable {
         System.out.println("Server Started in: " + thread.getName());
     }
 
+    @Deprecated
     private void closeConnection(Socket socket) {
         try {
-            if(socket != null){
+            if (socket != null) {
                 socket.shutdownInput();
                 socket.shutdownOutput();
-                socket.close();   
-            }  
+                socket.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
