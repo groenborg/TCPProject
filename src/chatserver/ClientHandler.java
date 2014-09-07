@@ -22,7 +22,6 @@ public class ClientHandler implements Runnable {
         this.client = client;
         this.input = new BufferedReader(new InputStreamReader(client.getInputStream()));
         this.output = new PrintWriter(client.getOutputStream(), true); // autoflush on
-
     }
 
     @Override
@@ -34,11 +33,9 @@ public class ClientHandler implements Runnable {
             String message = "";
             while (!message.contains("##STOP##")) {
                 message = input.readLine(); // BLOCKING CALL
-                System.out.println("Server Says: " + message);
                 output.println("ECHO: " + message);
             }
             shutDownClient();
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -47,10 +44,9 @@ public class ClientHandler implements Runnable {
 
     private void shutDownClient() {
         try {
-            this.client.close();
             this.input.close();
             this.output.close();
-
+            this.client.close();
         } catch (IOException e) {
             System.out.println("Error in client shutdown");
             e.printStackTrace();

@@ -4,6 +4,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.FileHandler;
+import java.util.logging.Formatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  *
@@ -20,6 +25,25 @@ public class Utility {
             return null;
         }
         return properties;
+    }
+
+    public static void setLogFile(String className) {
+        try {
+            Logger logger = Logger.getLogger(className);
+            FileHandler handler = new FileHandler("logfiles/serverlog%g.txt");
+            Formatter simpleFormat = new SimpleFormatter();
+            handler.setFormatter(simpleFormat);
+            logger.addHandler(handler);
+        } catch (IOException ex) {
+            System.out.println("logging error - no file");
+            ex.printStackTrace();
+        }
+    }
+
+    public static void logInfo(String className, String message) {
+        Logger logger;
+        logger = Logger.getLogger(className);
+        logger.log(Level.INFO, message);
     }
 
 }

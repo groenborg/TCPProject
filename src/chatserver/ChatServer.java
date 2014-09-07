@@ -57,6 +57,7 @@ public class ChatServer implements Runnable {
         this.ipAddress = properties.getProperty("ipaddress");
         this.thread = new Thread(this);
         this.thread.start();
+        Utility.setLogFile(ChatServer.class.getName());
         System.out.println("Server Started in: " + thread.getName());
     }
 
@@ -68,6 +69,7 @@ public class ChatServer implements Runnable {
             System.out.println("error in closing server");
             ex.printStackTrace();
         }
+        Utility.logInfo(ChatServer.class.getName(), "server closed");
         System.out.println("server closed");
     }
 
