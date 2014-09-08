@@ -12,27 +12,35 @@ import java.net.Socket;
  */
 public class ClientHandler implements Runnable {
 
-    private final BufferedReader input;
-    private final PrintWriter output;
+    private BufferedReader input;
+    private PrintWriter output;
     private final Socket client;
 
     private String clientName;
 
-    public ClientHandler(Socket client) throws IOException {
+    public ClientHandler(Socket client) {
         this.client = client;
-        this.input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        this.output = new PrintWriter(client.getOutputStream(), true); // autoflush on
+    }
+
+    public void openStreams(Socket socket) throws IOException {
+        this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.output = new PrintWriter(socket.getOutputStream(), true); // autoflush
+    }
+
+    public void sendMessage(String message) {
+        this.output.println(message);
     }
 
     @Override
     public void run() {
         try {
+            openStreams(client);
             this.clientName = this.client.getLocalSocketAddress().toString();
             System.out.println("handling client: " + clientName);
-
             String message = "";
             while (!message.contains("##STOP##")) {
                 message = input.readLine(); // BLOCKING CALL
+                sendMessage("ECHO: " + message);
                 output.println("ECHO: " + message);
             }
             shutDownClient();

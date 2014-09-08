@@ -12,27 +12,23 @@ import java.net.Socket;
 public class SocketMock extends Socket{
 
     public boolean closeCalled = false;
+    
     @Override
     public InputStream getInputStream() {
-
         return new InputStream() {
-
             @Override
             public int read() throws IOException {
                 return 1;
             }
         };
     }
-
+    
     
     @Override
     public OutputStream getOutputStream() {
-
         return new OutputStream() {
-
             @Override
             public void write(int b) throws IOException {
-
             }
         };
     }

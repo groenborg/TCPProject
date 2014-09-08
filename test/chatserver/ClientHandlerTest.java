@@ -1,70 +1,72 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chatserver;
 
 import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author simon
  */
 public class ClientHandlerTest {
-    
+
     private SocketMock mock;
-    
+    private ClientHandler handler;
+
     public ClientHandlerTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
         mock = new SocketMock();
+        handler = new ClientHandler(mock);
     }
-    
+
     @After
     public void tearDown() {
+        mock = null;
+        handler = null;
     }
 
     /**
      * Test of run method, of class ClientHandler.
      */
     @Test
-    public void testRun() {
-        System.out.println("run");
-        ClientHandler instance = null;
-        instance.run();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testOpenStream() {
+        System.out.println("open streams");
+        boolean expResult = true;
+        try {
+            handler.openStreams(mock);
+        } catch (IOException e) {
+            expResult = false;
+        }
+        assertEquals(true, expResult);
     }
-    
+
     @Test
-    public void testCloseServer(){
-       try{
+    public void testCloseServer() {
         ClientHandler h = new ClientHandler(mock);
-        h.shutDownClient();
-       }catch(IOException ex){
-           System.out.println("lol");
-       }
-       
-       mock.closeCalled = true;
+        boolean error = true;
+        try {
+            h.openStreams(mock);
+            h.shutDownClient();
+        } catch (Exception e) {
+            error = false;
+        }
+        assertTrue(error && mock.closeCalled);
+
     }
-    
-    
+
 }

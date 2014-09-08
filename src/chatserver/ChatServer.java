@@ -22,7 +22,6 @@ public class ChatServer implements Runnable {
     private final Properties properties = Utility.initProperties("server.properties");
     private String ipAddress = "10.0.1.11";
     private int port = 8014;
-    private HashMap<String, String> onsineUsers = new HashMap<>();
 
     private ChatServer() {
     }
@@ -57,7 +56,7 @@ public class ChatServer implements Runnable {
     }
 
     public HashMap<String, String> getUsers() {
-        return this.onsineUsers;
+        return null;
     }
 
     public synchronized void startServer() {
