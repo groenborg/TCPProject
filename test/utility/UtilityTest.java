@@ -26,6 +26,7 @@ public class UtilityTest {
 
     @BeforeClass
     public static void setUpClass() {
+        
     }
 
     @AfterClass

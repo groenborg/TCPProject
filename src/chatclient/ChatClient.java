@@ -60,7 +60,7 @@ public class ChatClient implements Runnable {
             input.close();
             output.close();
             socket.close();
-        } catch (IOException  ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
         System.out.println("client succesfully closed");

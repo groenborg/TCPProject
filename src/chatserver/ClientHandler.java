@@ -42,7 +42,7 @@ public class ClientHandler implements Runnable {
 
     }
 
-    private void shutDownClient() {
+    public void shutDownClient() {
         try {
             this.input.close();
             this.output.close();

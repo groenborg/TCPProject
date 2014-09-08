@@ -19,8 +19,8 @@ public class StartServer {
     public static void main(String[] args) {
 
         // Starting webserver
-        webServer = WebServer.getInstance();
-        webServer.startServer();
+        //webServer = WebServer.getInstance();
+        //webServer.startServer();
         // Starting ChatServer
         chatServer = ChatServer.getInstance();
         chatServer.startServer();
@@ -78,8 +78,9 @@ public class StartServer {
                 chatServer.closeServer();
                 webServer.closeHttpServer();
             default:
-                if (!command.equals("killall")) 
+                if (!command.equals("killall")) {
                     System.out.println("unknow command");
+                }
         }
     }
 

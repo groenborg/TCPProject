@@ -11,8 +11,8 @@ import java.io.InputStreamReader;
 public class Terminal implements Observer {
 
     public static void main(String[] args) {
-        String inetAddress = "10.0.1.11";
-        int port = 8014;
+        String inetAddress = "ngrok.com";
+        int port = 56717;
         if (args.length == 2) {
             inetAddress = args[0];
             port = Integer.parseInt(args[1]);
