@@ -24,19 +24,6 @@ public class MessageDispatcher implements Runnable {
         this.users.put(name, handler);
     }
 
-    public static void main(String[] args) {
-        MessageDispatcher h = new MessageDispatcher(new ArrayBlockingQueue(100), new HashMap());
-
-        Thread t = new Thread(h);
-        t.start();
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(MessageDispatcher.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        h.putMessage(new Message("hej", "med", "dig"));
-    }
-
     @Override
     public void run() {
         try {

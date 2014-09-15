@@ -40,8 +40,8 @@ public class ChatServer implements Runnable {
             Socket socket = null;
             try {
                 socket = this.serverSocket.accept();
-                Thread t = new Thread(new ClientHandler(socket));
-                t.start();
+               // Thread t = new Thread(new ClientHandler(socket));
+                //t.start();
             } catch (IOException e) {
                 if (!running) {
                     System.out.println("Server stopped Running");
