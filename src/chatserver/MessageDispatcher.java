@@ -2,8 +2,6 @@ package chatserver;
 
 import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -47,13 +45,9 @@ public class MessageDispatcher implements Runnable {
     }
 
     public void dispatchMessage(Message message) {
-        ClientHandler h;
-        if ((h = users.get(message.getRecieverID())) != null) {
-            h.sendMessage(message.getMessage());
-        } else {
-            users.get(message.getSender()).sendMessage("user: " + message.getRecieverID()
-                    + " not online");
-        }
+        
+        
+        
     }
 
 }

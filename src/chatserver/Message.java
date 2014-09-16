@@ -1,5 +1,7 @@
 package chatserver;
 
+import chatinterfaces.ClientInterface;
+
 /**
  *
  * @author Grønborg
@@ -7,25 +9,18 @@ package chatserver;
 public class Message {
 
     private final String message;
-    private final String recieverID;
-    private final String sender;
+    private final ClientInterface client;
 
-    public Message(String message, String recieverID, String sender) {
+    public Message(String message, ClientInterface client) {
         this.message = message;
-        this.recieverID = recieverID;
-        this.sender = sender;
+        this.client = client;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public String getRecieverID() {
-        return recieverID;
+    public ClientInterface getClient() {
+        return client;
     }
-
-    public String getSender() {
-        return sender;
-    }
-
 }
